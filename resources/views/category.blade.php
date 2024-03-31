@@ -1,61 +1,68 @@
 @extends('layout.app')
+@extends('layout.nuvbar')
 @section('title')
 Категории
 @endsection
 @section('content')
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('category') }}">Категории игр</a>
-              </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin') }}">Создать ситуацию</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('situationPage') }}">Все ситуации</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('exit') }}">Выход</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 <div class="container">
     <div class="row">
-        <div class="col-7">
+        <div class="col-12">
             @if (session()->has('ok'))
             <div class="alert alert-success mt-2">
                 {{ session('ok') }}
             </div>
             @endif
-            <div class="shadow rounded p-3 mt-4">
-                 <h3>Создать категорию</h3>
-            <form action="{{ route('categorySave') }}" class="mt-3" method="post">
-                @csrf
-                @method('post')
-                <div class="mb-3">
-                    <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" placeholder="Название">
-                    <div class="invalid-feedback">
-                        @error('title')
-                            {{ $message }}
-                        @enderror
+
+            <div>
+                <form action="{{route('search')}}" class="mt-3"  role="search" method="post">
+                    @method('post')
+                    @csrf
+                    <div  class="d-flex justify-content-between col-10">
+                         <input class="form-control" type="search"  id="title" name="search" placeholder="Искать категорию" aria-label="Search">
+                    <button class="btn btn-dark" style="margin-left:10px" type="submit">Поиск</button>
+                    <a href="" class="btn bg-body-secondary col-2" style="margin-left:10px"> Все категории</a>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="d-flex justify-content-between mt-5 col-4" >
+            <h3>Kатегории</h3>
+             <!-- Button trigger modal -->
+             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                Добавить +
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Добавление категории</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('categorySave') }}" class="mt-3" method="post">
+                            @csrf
+                            @method('post')
+                            <div class="mb-3">
+                                <input type="text" name="title" class="form-control" placeholder="Название">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </form>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-dark">Сохранить</button>
-            </form>
+                </div>
             </div>
-            <h3 class="mt-5">Все категории</h3>
-            <div class="container-fluid d-flex flex-wrap align-items-sm-start" style="margin: 0 auto">
+            </div>
+
+            <div class="container-fluid d-flex flex-wrap align-items-sm-start mt-3" style="margin: 0 auto">
                 @foreach($categories as $category)
                         <div class="card m-3 pb-2" >
                             <div class="card-body">
                                 <h5 class="card-title">{{$category->title}}</h5>
+                                <p>{{ date('d-m-Y', strtotime($category->created_at)) }}</p>
+                                <a href="{{ route('situationPage', ['id'=>$category->id]) }}" class="btn btn-outline-dark">Открыть</a>
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $category->id }}">
                                     Редактировать
@@ -82,7 +89,26 @@
                                     </div>
                                     </div>
                                 </div>
-                               <a href="{{ route('categoryDelete', ['category'=>$category]) }}" class="btn btn-outline-danger">Удалить</a>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal1{{ $category->id }}">
+                                    Удалить
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal1{{ $category->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Вы точно хотите удалить категорию?</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                        <a href="{{ route('categoryDelete', ['category'=>$category]) }}" class="btn btn-danger">Удалить</a>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

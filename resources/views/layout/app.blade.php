@@ -10,6 +10,7 @@
 </head>
 <body>
 <script src="{{asset('public/js/bootstrap.bundle.js')}}"></script>
+@yield('layout.nuvbar')
 @yield('content')
 </body>
 </html>

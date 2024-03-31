@@ -1,31 +1,9 @@
 @extends('layout.app')
+@extends('layout.nuvbar')
 @section('title')
 Подробнее
 @endsection
 @section('content')
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('category') }}">Категории игр</a>
-              </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin') }}">Создать ситуацию</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('situationPage') }}">Все ситуации</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('exit') }}">Выход</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 <div class="container mt-3">
     <div class="row">
         <div class="col-12">
@@ -54,24 +32,24 @@
                                         @csrf
                                         @method('post')
                                         <div class="mb-3">
-                                            <input type="text" name="text" class="form-control" placeholder="Ситуация" value="{{ $question->text }}">
+                                            <textarea type="text" name="text" class="form-control" placeholder="Ситуация" >{{ $question->text }}</textarea>
                                         </div>
 
                                         <div class="mb-3">
-                                            <input type="text" name="text_right" class="form-control" placeholder="Правильный ответ" value="{{ $question->text_right }}">
+                                            <textarea type="text" name="text_right" class="form-control" placeholder="Правильный ответ" >{{ $question->text_right }}</textarea>
                                         </div>
 
                                         <p>Введите три варианта ответа:</p>
                                         <div class="mb-3">
-                                            <input type="text" name="answer_one" class="form-control" placeholder="Вариант ответа первый" value="{{ $question->answer_one }}">
+                                            <textarea type="text" name="answer_one" class="form-control" placeholder="Вариант ответа первый">{{ $question->answer_one }}</textarea>
                                         </div>
 
                                         <div class="mb-3">
-                                            <input type="text" name="answer_two" class="form-control" placeholder="Вариант ответа второй" value="{{ $question->answer_two }}">
+                                            <textarea type="text" name="answer_two" class="form-control" placeholder="Вариант ответа второй" >{{ $question->answer_two }}</textarea>
                                         </div>
 
                                         <div class="mb-3">
-                                            <input type="text" name="answer_three" class="form-control" placeholder="Вариант ответа третий" value="{{ $question->answer_three }}">
+                                            <textarea type="text" name="answer_three" class="form-control" placeholder="Вариант ответа третий" >{{ $question->answer_three }}</textarea>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Изменить</button>
                                     </form>
@@ -81,7 +59,7 @@
                             </div>
                         </div>
                 </div>
-                <a href="{{ route('situationPage') }}" class="btn bg-body-secondary">Все ситуации <img src="{{ asset('public\icons8-выход-50.png') }}" style="width: 2vw" alt=""></a>
+
                 </div>
 
             </div>

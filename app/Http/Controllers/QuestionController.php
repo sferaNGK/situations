@@ -44,6 +44,7 @@ class QuestionController extends Controller
         ]);
 
         $question = new question();
+
         $question->text = $request->text;
         $question->text_right = $request->text_right;
         $question->answer_one = $request->answer_one;
@@ -51,6 +52,7 @@ class QuestionController extends Controller
         $question->answer_two = $request->answer_two;
         $question->category_id = $request->category;
         $question->save();
+
         return redirect()->back()->with('ok', 'Ситуация сохранена');
     }
 

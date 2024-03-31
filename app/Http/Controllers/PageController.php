@@ -21,10 +21,12 @@ class PageController extends Controller
         return view('welcome');
     }
 
-    public function situationPage(){
+    public function situationPage($id){
+        $category = Category::query()->where('id', $id)->first();
+        $question = question::query()->where('category_id', $id)->first();
         $categories = Category::all();
-        $questions = question::query()->latest('created_at')->get();
-        return view('situations', compact('questions', 'categories'));
+        $questions = question::query()->where('category_id', $id)->latest('created_at')->get();
+        return view('situations', compact('questions', 'categories', 'question', 'category'));
     }
 
     public function detail($id){
@@ -33,7 +35,11 @@ class PageController extends Controller
     }
 
     public function category(){
-        $categories = Category::query()->latest('created_at')->get();
+        if(session('categories')){
+            $categories = session('categories');
+        }else{
+            $categories = Category::query()->latest('created_at')->get();
+        }
         return view('category', compact('categories'));
     }
 }

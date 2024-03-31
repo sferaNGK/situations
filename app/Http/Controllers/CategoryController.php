@@ -34,11 +34,26 @@ class CategoryController extends Controller
         [
             'title.required'=>'Поле обязательно для заполнения',
         ]);
-        
+
         $category = new Category();
         $category->title = $request->title;
         $category->save();
         return redirect()->back();
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->get('search');
+
+        if (!empty($search)) {
+            $categories = Category::query()
+                ->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%");
+                        })->get();
+
+            return redirect()->back()->with('categories', $categories);
+        }
+
     }
 
     /**
