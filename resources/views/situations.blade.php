@@ -7,7 +7,7 @@
 
   <div class="container">
     <div class="row">
-        <div class="col-12">
+        <div class="col-10">
             <div class="d-flex justify-content-between mt-4 col-5">
 
 
@@ -90,7 +90,7 @@
 
                         <div class="card m-3 pb-2">
                             <div class="card-body">
-                                <p class="card-title">{{$question->text}}</p>
+                                <p class="card-title col-12 text-truncate">{{$question->text}}</p>
                                 <a href="{{ route('detail', ['id'=>$question->id]) }}" class="btn btn-outline-dark mt-2">Открыть</a>
                                  <!-- Button trigger modal -->
                                  <button type="button" class="btn btn-outline-danger mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal1{{ $question->id }}">
