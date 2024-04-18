@@ -7,12 +7,9 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             @auth
                    <li class="nav-item">
-                <a class="nav-link" href="{{ route('category') }}">Категории игр</a>
+                <a class="nav-link" href="{{ route('category') }}">Игры</a>
               </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin') }}">Создать ситуацию</a>
-          </li>
-         
+
           <li class="nav-item">
             <a class="nav-link" href="{{ route('exit') }}">Выход</a>
           </li>

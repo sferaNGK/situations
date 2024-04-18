@@ -56,6 +56,10 @@ class CategoryController extends Controller
 
     }
 
+    public function getGame(){
+        return response()->json(Category::all());
+    }
+
     /**
      * Display the specified resource.
      */

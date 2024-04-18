@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AnswerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/game', [CategoryController::class, 'getGame']);
+Route::get('/question', [QuestionController::class, 'getQuestion']);
+Route::get('/question/{id}', [QuestionController::class, 'getQuestions']);
+Route::get('/answer/{id}', [AnswerController::class, 'getAnswers']);
+Route::get('/answer', [AnswerController::class, 'getAnswer']);

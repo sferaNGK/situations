@@ -1,7 +1,7 @@
 @extends('layout.app')
 @extends('layout.nuvbar')
 @section('title')
-Категории
+Игры
 @endsection
 @section('content')
 <div class="container">
@@ -18,16 +18,16 @@
                     @method('post')
                     @csrf
                     <div  class="d-flex justify-content-between col-10">
-                         <input class="form-control" type="search"  id="title" name="search" placeholder="Искать категорию" aria-label="Search">
+                         <input class="form-control" type="search"  id="title" name="search" placeholder="Искать игру" aria-label="Search">
                     <button class="btn btn-dark" style="margin-left:10px" type="submit">Поиск</button>
-                    <a href="" class="btn bg-body-secondary col-2" style="margin-left:10px"> Все категории</a>
+                    <a href="" class="btn bg-body-secondary col-2" style="margin-left:10px"> Все Игры</a>
                     </div>
 
                 </form>
             </div>
 
             <div class="d-flex justify-content-between mt-5 col-4" >
-            <h3>Kатегории</h3>
+            <h3>Игры</h3>
              <!-- Button trigger modal -->
              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                 Добавить +
@@ -38,7 +38,7 @@
                 <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Добавление категории</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Добавление игры</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -73,7 +73,7 @@
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Редактиорвание</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Редактирование</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -99,7 +99,7 @@
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Вы точно хотите удалить категорию?</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Вы точно хотите удалить игру?</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-footer">

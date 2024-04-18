@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
@@ -21,19 +23,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('page/registration', [PageController::class, 'regPage'])->name('regPage');
-Route::post('page/registration/save', [UserController::class, 'reg'])->name('reg');
-Route::post('page/authorization', [UserController::class, 'auth'])->name('auth');
-Route::get('page/admin', [PageController::class, 'admin'])->name('admin');
-Route::get('page/exit', [UserController::class, 'exit'])->name('exit');
-Route::get('page/welcome', [PageController::class, 'welcome'])->name('welcome');
-Route::post('page/situation/save', [QuestionController::class, 'store'])->name('situation');
-Route::get('page/situations{id}', [PageController::class, 'situationPage'])->name('situationPage');
-Route::get('page/situations/detail{id}', [PageController::class, 'detail'])->name('detail');
-Route::post('page/situations/update{question}', [QuestionController::class, 'update'])->name('questionUpdate');
-Route::get('page/situations/delete{question}', [QuestionController::class, 'destroy'])->name('questionDelete');
-Route::get('page/category', [PageController::class, 'category'])->name('category');
-Route::post('page/category/save', [CategoryController::class, 'store'])->name('categorySave');
-Route::get('page/category/delete/{category}', [CategoryController::class, 'destroy'])->name('categoryDelete');
-Route::post('page/category/update/{category}', [CategoryController::class, 'update'])->name('categoryUpdate');
-Route::post('page/category/search', [CategoryController::class, 'search'])->name('search');
+Route::group(['prefix' => 'page'], function(){
+    Route::get('registration', [PageController::class, 'regPage'])->name('regPage');
+    Route::post('registration/save', [UserController::class, 'reg'])->name('reg');
+
+    Route::post('authorization', [UserController::class, 'auth'])->name('auth');
+    Route::get('admin', [PageController::class, 'admin'])->name('admin');
+    Route::get('exit', [UserController::class, 'exit'])->name('exit');
+    Route::get('welcome', [PageController::class, 'welcome'])->name('welcome');
+
+    Route::group(['prefix' => 'situation'], function(){
+        Route::get('{id}', [PageController::class, 'situationPage'])->name('situationPage');
+        Route::get('detail/{id}', [PageController::class, 'detail'])->name('detail');
+        Route::get('{category}/add', [PageController::class, 'add'])->name('add');
+
+        Route::get('delete/{question}', [QuestionController::class, 'destroy'])->name('questionDelete');
+        Route::post('update/{question}/{answer}', [QuestionController::class, 'update'])->name('questionUpdate');
+        Route::post('/{category}/save', [QuestionController::class, 'store'])->name('situation');
+
+        Route::post('answer/one', [AnswerController::class, 'store'])->name('answerAdd');
+    });
+
+    Route::get('category', [PageController::class, 'category'])->name('category');
+    Route::post('category/save', [CategoryController::class, 'store'])->name('categorySave');
+    Route::get('category/delete/{category}', [CategoryController::class, 'destroy'])->name('categoryDelete');
+    Route::post('category/update/{category}', [CategoryController::class, 'update'])->name('categoryUpdate');
+    Route::post('category/search', [CategoryController::class, 'search'])->name('search');
+
+});
