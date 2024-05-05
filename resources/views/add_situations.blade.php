@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col-2 d-flex justify-content-center align-items-center">
                                 <label class="d-flex justify-content-between">
-                                   <div> {{ $i + 1 }}) </div><input type="radio"  style=" transform: scale(1.7);
+                                   <div> {{ $i + 1 }} </div><input type="radio"  style=" transform: scale(1.7);
                                     margin-left:15px;margin-top:5px" class="@error('right') is-invalid @enderror" name="right" value="{{ $i }}">
 
                                 <div class="p-3 invalid-feedback">

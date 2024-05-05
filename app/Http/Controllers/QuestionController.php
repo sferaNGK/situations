@@ -37,8 +37,16 @@ class QuestionController extends Controller
     }
 
     public function getQuestions(Request $request){
-        $question = Question::query()->where('id',$request->id)->first();
+        $question = Question::query()->where('category_id',$request->id)->get();
         return response()->json($question);
+    }
+    public function getAnswers(Request $request){
+        $answers = [];
+        $question = Question::query()->where('category_id',$request->id)->get();
+        foreach($question as $que){
+            array_push($answers, Answer::with('question')->where('question_id',$que->id)->get());
+        }
+        return response()->json($answers);
     }
     /**
      * Store a newly created resource in storage.
@@ -76,8 +84,11 @@ class QuestionController extends Controller
         $question = new Question();
 
         if($request->file('file')){
-            $path = $request->file('file')->store('file');
-            $question->file ='/public/storage/'.$path;
+            // $path = $request->file('file')->store('file');
+            // $question->file ='/public/storage/'.$path;
+
+            $question->file = '/storage/'.$request->file('file')->store('/public/img');
+            $question->file = str_replace('public/',"",$question->file);
         }
 
         $question->text = $request->text;
@@ -88,8 +99,12 @@ class QuestionController extends Controller
         for ($i = 0; $i < 4; $i++) {
             $answer = new Answer();
             if($request->file('answer_file.'.$i)){
-                $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
-                $answer->answer_file ='/public/storage/'.$path;
+                // $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
+                // $answer->answer_file ='/public/storage/'.$path;
+
+                $answer->answer_file = '/storage/'.$request->file('answer_file.' . $i)->store('/public/answer');
+                $answer->answer_file = str_replace('public/',"",$answer->answer_file);
+
             }
             $answer->question_id = $question->id;
             $answer->explain = $request->explain;
@@ -100,7 +115,7 @@ class QuestionController extends Controller
             $answer->save();
         }
 
-        return redirect()->back()->with('ok', 'Ситуация сохранена');
+        return redirect()->route('situationPage', $category->id)->with('ok', 'Ситуация сохранена');
     }
 
     /**
@@ -122,12 +137,16 @@ class QuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Question $question, Answer $answer)
+    public function update(Request $request, Question $question)
 
     {
         if($request->file('file')!==null){
-            $path = $request->file('file')->store('file');
-            $question->file = '/public/storage/'.$path;
+            // $path = $request->file('file')->store('file');
+            // $question->file = '/public/storage/'.$path;
+
+            $question->file = '/storage/'.$request->file('file')->store('/public/img');
+            $question->file = str_replace('public/',"",$question->file);
+
             $question->text =null;
         }else{
             $question->text = $request->text;
@@ -135,23 +154,57 @@ class QuestionController extends Controller
         $question->type = $request->type;
         $question->update();
 
-        for ($i = 0; $i < 4; $i++) {
+        $answers = Answer::query()->where('question_id',$question->id)->get();
 
-            if($request->file('answer_file.'.$i)!==null){
-            $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
-            $answer->answer_file ='/public/storage/'.$path;
-            $answer->answer_text = null;
-            }else{
-                $answer->answer_text = $request->input('answer_text.' .$i);
-                $answer->answer_file = null;
-            }
-            $answer->explain = $request->explain;
-            $answer->help = $request->help;
-            $answer->right = $request->input('right') == $i;
-            $answer->answer_type = $request->input('answer_type.' . $i);
-            $answer->update();
+        foreach($answers as $key => $answ){
+            if($request->file('answer_file.'.$key)!==null){
 
+                // $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
+                // $answer->answer_file ='/public/storage/'.$path;
+
+                $answ->answer_file = '/storage/'.$request->file('answer_file' . $key)->store('/public/answer');
+                $answ->answer_file = str_replace('public/',"",$answ->answer_file);
+
+                $answ->answer_text = null;
+                }else{
+                    $answ->answer_text = $request->input('answer_text.' .$key);
+                    $answ->answer_file = null;
+                }
+                $answ->explain = $request->explain;
+                $answ->help = $request->help;
+                if($request->input('right')){
+                    $answ->right = $request->input('right') == $key;
+                }
+                $answ->answer_type = $request->input('answer_type.' . $key);
+                $answ->update();
         }
+
+
+
+        // for ($i = 0; $i < 4; $i++) {
+
+        //     if($request->file('answer_file.'.$i)!==null){
+
+        //     // $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
+        //     // $answer->answer_file ='/public/storage/'.$path;
+
+        //     $answer->answer_file = '/storage/'.$request->file('answer_file' . $i)->store('/public/answer');
+        //     $answer->answer_file = str_replace('public/',"",$answer->answer_file);
+
+        //     $answer->answer_text = null;
+        //     }else{
+        //         $answer->answer_text = $request->input('answer_text.' .$i);
+        //         $answer->answer_file = null;
+        //     }
+        //     $answer->explain = $request->explain;
+        //     $answer->help = $request->help;
+        //     $answer->right = $request->input('right') == $i;
+        //     $answer->answer_type = $request->input('answer_type.' . $i);
+        //     $answer->update();
+
+        // }
+
+
         // $answers = Answer::query()->where('question_id', $question->id)->get();
         // foreach ($answers as $answer) {
 
@@ -171,9 +224,7 @@ class QuestionController extends Controller
         //     $answer->answer_type = $request->input('answer_type.' . $id);
         //     $answer->update();
         // }
-
-        dd($request->all());
-        return redirect()->back();
+        return redirect()->route('situationPage', $question->category_id);
     }
 
     /**

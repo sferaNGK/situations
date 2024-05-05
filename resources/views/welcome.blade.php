@@ -4,17 +4,19 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 d-flex justify-content-center align-items-center h-100">
 
             <div class="shadow rounded mt-5 col-7">
                  <h3 class="p-2" style="text-align: center">Авторизация</h3>
 
-                 @if (session()->has('error'))
-                 <div class="alert alert-danger">
-                     {{ session('error') }}
-                 </div>
+                 <div class="p-2">
+                     @if (session()->has('error'))
+                     <div class="alert alert-danger">
+                         {{ session('error') }}
+                     </div>
 
-                 @endif
+                     @endif
+                 </div>
             <div class="p-4">
                 <form action="{{ route('auth') }}" method="post">
                     @csrf
@@ -38,7 +40,7 @@
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary">Авторизоваться</button>
-                        <a href="{{ route('regPage') }}" class="p-2">Еще не зарегистрированы?</a>
+                        {{-- <a href="{{ route('regPage') }}" class="p-2">Еще не зарегистрированы?</a> --}}
                     </div>
 
                 </form>

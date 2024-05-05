@@ -16,7 +16,7 @@
                 <p><h5>Ответы:</h5></p>
                 @foreach ( $question->answers as $key=>$answer )
                 <div class="d-flex">
-                    <p>{{ $key + 1 }})</p>
+                    <p>{{ $key + 1 }}</p>
                      <p style="margin-left:10px" class="mb-3">{{ $answer->answer_text }}</p>
                      @if($answer->answer_file)
                      @php
@@ -32,7 +32,7 @@
                              Ваш браузер не поддерживает аудио элемент.
                          </audio>
                          @elseif(in_array($extension, ['mp4', 'webm', 'ogg']))
-                        <video controls style="max-width: 30%; height: auto;" class="mb-3">
+                        <video controls style="max-width: 30%; max-height: 400px;" class="mb-3">
                             <source src="{{ asset($answer->answer_file) }}"   type="video/{{ $extension }}">
                             Ваш браузер не поддерживает видео элемент.
                         </video>
