@@ -1,0 +1,17 @@
+@import './base.css';
+@import 'bootstrap';
+#app {
+  font-weight: normal;
+}
+.right{
+    transition: 0.2s;
+    background-color: rgba(39, 130, 49, 0.735) !important;
+}
+.hide{
+    transform: scale(0);
+    transition: 0.3s;
+}
+.apear{
+    transform: scale(1);
+    transition: 0.6s;
+}
