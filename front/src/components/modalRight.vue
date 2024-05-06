@@ -6,19 +6,19 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex align-items-center justify-content-center">
                         <h5 class="modal-title">
-                            Ответ неверный
+                            Ответ Верный
                         </h5>
                     </div>
                     <div class="modal-body d-flex align-items-center justify-content-center">
-                        <p v-if="help_type == 'Текст'" class="text-black">
-                          {{ help }}
+                        <p v-if="answer_type == 'Текст'" class="text-black">
+                          {{ answer }}
                         </p>
-                        <img style="width: auto; max-height: 100%; object-fit:contain;" v-if="help_type == 'Изображение'" :src="link + help_file">
-                        <audio controls v-if="help_type == 'Аудио'" class="w-75">
-                            <source :src="link + help_file" type="audio/mp3">
+                        <img style="width: auto; max-height: 100%; object-fit:contain;" v-if="answer_type == 'Изображение'" :src="link + answer_file">
+                        <audio controls v-if="answer_type == 'Аудио'" class="w-75">
+                            <source :src="link + answer_file" type="audio/mp3">
                         </audio>
-                        <video style="width: 100%; max-height: 100%; display: block; object-fit:cover; border-radius:15px;" controls v-if="help_type == 'Видео'" :src="link + help_file">
-                            <source :src="link + help_file" type="video/mp4">
+                        <video style="width: 100%; max-height: 100%; display: block; object-fit:cover; border-radius:15px;" controls v-if="answer_type == 'Видео'" :src="link + answer_file">
+                            <source :src="link + answer_file" type="video/mp4">
                         </video>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
@@ -34,16 +34,16 @@ import { link } from '@/main';
 import { RouterLink, RouterView } from 'vue-router';
 export default {
     props:{
-        modalWrongTrue:{
+        modalRightTrue:{
             type:Boolean,
         },
-        help:{
+        answer:{
             type:String,
         },
-        help_file:{
+        answer_file:{
             type:String,
         },
-        help_type:{
+        answer_type:{
             type:String,
         },
     },
