@@ -24,9 +24,9 @@
                     <div class="question">
                         <select class="form-select mb-3" name="type" id="questionType">
                             <option>Текст</option>
-                            <option>Изображение</option>
-                            <option>Аудио</option>
-                            <option>Видео</option>
+                            <option>Текст + Изображение</option>
+                            <option>Текст + Аудио</option>
+                            <option>Текст + Видео</option>
                         </select>
 
 
@@ -58,22 +58,21 @@
                                 </div>
                             </label>
                             </div>
-                            <div class="col-10">
-                                <select class="form-select mt-4" name="answer_type[{{ $i }}]" onchange="changeTypeAnswer(this.value, {{ $i }})">
+                            <div class="col-10 mb-4">
+                                {{-- <select class="form-select mt-4" name="answer_type[{{ $i }}]" onchange="changeTypeAnswer(this.value, {{ $i }})">
                                     <option>Текст</option>
                                     <option>Изображение</option>
                                     <option>Аудио</option>
                                     <option>Видео</option>
-                                </select>
-
+                                </select> --}}
                                 <div class="mt-2">
-                                    <textarea type="text" style="display: block" class="form-control @error('answer_text.' . $i) is-invalid @enderror" id="answer_area_{{ $i }}" name="answer_text[{{ $i }}]"></textarea>
-                                    <input type="file" style="display: none" class="form-control @error('answer_file.' . $i) is-invalid @enderror" name="answer_file[{{ $i }}]" id="answer_input_{{ $i }}">
+                                    <textarea type="text" placeholder="Введите ответ" class="form-control @error('answer_text.' . $i) is-invalid @enderror" id="answer_area_{{ $i }}" name="answer_text[{{ $i }}]"></textarea>
+                                    {{-- <input type="file" style="display: none" class="form-control @error('answer_file.' . $i) is-invalid @enderror" name="answer_file[{{ $i }}]" id="answer_input_{{ $i }}">
                                     <div class="invalid-feedback">
                                         @error('answer_text.' . $i)
                                         {{ $message }}
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
                                 </div>
                             </div>
@@ -82,21 +81,35 @@
 
                     <div class="mb-4">
                         <h6 for="explain"> Введите объяснение:</h6>
+                        <select name="explain_type" class="form-select mt-2 mb-2" id="answer_type">
+                            <option>Текст</option>
+                            <option>Изображение</option>
+                            <option>Аудио</option>
+                            <option>Видео</option>
+                        </select>
                         <textarea type="text" name="explain" id="explain" class="form-control @error('explain') is-invalid @enderror" placeholder="Объяснение"></textarea>
+                        <input type="file" name="explain_file" class="form-control  @error('file') is-invalid @enderror" style="display: none" id="answer_input">
                         <div class="invalid-feedback">
-                        @error('explain')
-                        {{ $message }}
-                        @enderror
+                            @error('explain')
+                                {{ $message }}
+                            @enderror
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <h6 for="help"> Введите подсказку:</h6>
+                        <select name="help_type" class="form-select mt-2 mb-2" id="help_type">
+                            <option>Текст</option>
+                            <option>Изображение</option>
+                            <option>Аудио</option>
+                            <option>Видео</option>
+                        </select>
                         <textarea type="text" name="help" id="help" class="form-control @error('help') is-invalid @enderror" placeholder="Подсказка"></textarea>
+                        <input type="file" name="help_file" class="form-control  @error('file') is-invalid @enderror" style="display: none" id="help_input">
                         <div class="invalid-feedback">
-                        @error('help')
-                        {{ $message }}
-                        @enderror
+                            @error('help')
+                                {{ $message }}
+                            @enderror
                         </div>
                     </div>
 
@@ -112,32 +125,37 @@
 const questionType = document.querySelector('#questionType');
 
 questionType.addEventListener('change', (event) => {
-    const question_textarea =  document.querySelector('#question_textarea');
     const question_input =  document.querySelector('#question_input');
     if(event.target.value !== 'Текст'){
-        question_textarea.style.display = 'none';
         question_input.style.display = 'block';
     }else{
-        question_textarea.style.display = 'block';
         question_input.style.display = 'none';
     }
 });
 
-
-    function changeTypeAnswer(el, id){
-        console.log(el, id);
-        const answer_area = document.querySelector(`#answer_area_${id}`);
-        const answer_input = document.querySelector(`#answer_input_${id}`);
-        if(el !== 'Текст'){
-            answer_area.style.display = 'none';
-            answer_input.style.display = 'block';
-        } else {
-            answer_area.style.display = 'block';
-            answer_input.style.display = 'none';
-        }
+document.querySelector('#answer_type').addEventListener('change', (event) =>{
+    const answer_input = document.querySelector('#answer_input');
+    const answer_area = document.querySelector('#explain');
+    if(event.target.value !== 'Текст'){
+        answer_input.style.display = 'block';
+        answer_area.style.display = 'none';
+    }else{
+        answer_input.style.display = 'none';
+        answer_area.style.display = 'block';
     }
+});
 
-
+document.querySelector('#help_type').addEventListener('change', (event) =>{
+    const help_input = document.querySelector('#help');
+    const help_area = document.querySelector('#help_input');
+    if(event.target.value !== 'Текст'){
+        help_area.style.display = 'block';
+        help_input.style.display = 'none';
+    }else{
+        help_area.style.display = 'none';
+        help_input.style.display = 'block';
+    }
+});
 
 </script>
 @endsection

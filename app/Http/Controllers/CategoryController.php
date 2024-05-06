@@ -30,13 +30,16 @@ class CategoryController extends Controller
     {
         $request->validate([
             'title'=>['required'],
+            'description'=>['required'],
         ],
         [
             'title.required'=>'Поле обязательно для заполнения',
+            'description'=>'Поле обязательно для заполнения'
         ]);
 
         $category = new Category();
         $category->title = $request->title;
+        $category->description = $request->description;
         $category->save();
         return redirect()->back();
     }
@@ -82,6 +85,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $category->title = $request->title;
+        $category->description = $request->description;
         $category->update();
         return redirect()->back();
     }

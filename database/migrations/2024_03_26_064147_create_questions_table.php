@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->text('text')->nullable();
+            $table->text('text');
             $table->string('file')->nullable();
             $table->string('type');
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();

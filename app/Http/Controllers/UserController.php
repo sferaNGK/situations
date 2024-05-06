@@ -13,7 +13,7 @@ class UserController extends Controller
 
             $request->validate([
                 'login'=>['required', 'regex:/[A-Za-z -]/u'],
-                'password'=>['required','confirmed', 'min:6'],
+                'password'=>['required','confirmed'],
                 'rule'=>['required'],
             ]);
 

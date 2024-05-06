@@ -48,6 +48,9 @@
                             <div class="mb-3">
                                 <input type="text" name="title" class="form-control" placeholder="Название">
                             </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" name="description" placeholder="Описание" cols="30" rows="5"></textarea>
+                            </div>
                             <button type="submit" class="btn btn-primary">Сохранить</button>
                         </form>
                     </div>
@@ -82,6 +85,9 @@
                                                 @method('post')
                                                 <div class="mb-3">
                                                     <input type="text" name="title" class="form-control" placeholder="Название" value="{{ $category->title }}">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <textarea class="form-control" name="description" placeholder="Описание" cols="30" rows="5">{{ $category->description }}</textarea>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Изменить</button>
                                             </form>

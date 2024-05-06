@@ -52,10 +52,13 @@
 
                 <h5>Объяснение:</h5>
                 <p>{{ $answer->explain }}</p>
+                <img src="{{ $answer->explain_file }}" alt="" srcset="">
+
                 <h5>Подсказка:</h5>
                 <p>{{ $answer->help }}</p>
+                <img src="{{ $answer->help_file }}" class="w-25" alt="" srcset="">
 
-                <div class="d-flex justify-content-between col-4">
+                <div class="d-flex justify-content-between col-4 mt-3">
                     <div>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $question->id }}">
                             Редактировать

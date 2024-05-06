@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 d-flex align-items-center justify-content-center">
 
             <div class="shadow rounded mt-5 col-7">
                  <h3 class="p-2" style="text-align: center">Регистрация</h3>

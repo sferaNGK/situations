@@ -53,40 +53,22 @@ class QuestionController extends Controller
      */
     public function store(Request $request, Category $category)
     {
-        // dd($request->all());
+
         /**
          * 1. Создаём вопрос. Получаем его ID.
          * 2. В цикле перебираем все ответы, и каждый записываем в БД.
          *
          */
         $request->validate([
-            'answer_text.0' => 'required_without:answer_file.0',
-            'answer_file.0' => 'required_without:answer_text.0',
-            'answer_text.1' => 'required_without:answer_file.1',
-            'answer_file.1' => 'required_without:answer_text.1',
-            'text' => 'required_without:file',
-            'file' => 'required_without:text',
-            'explain'=>'required',
-            'help'=>'required',
             'right'=>'required',
         ],
         [
-            'answer_text.0.required_without'=>'Поле обязательно для заполнения, если файл отсутствует',
-            'answer_file.0.required_without'=>'Поле обязательно для заполнения, если текст отсутствует',
-            'answer_text.1.required_without'=>'Поле обязательно для заполнения, если файл отсутствует',
-            'answer_file.1.required_without'=>'Поле обязательно для заполнения, если текст отсутствует',
-            'text.required_without'=>'Поле обязательно для заполнения, если файл отсутствует',
-            'explain.required'=>'Поле обязательно для заполнения',
-            'help.required'=>'Поле обязательно для заполнения',
             'right.required'=>'!',
         ]);
 
         $question = new Question();
 
         if($request->file('file')){
-            // $path = $request->file('file')->store('file');
-            // $question->file ='/public/storage/'.$path;
-
             $question->file = '/storage/'.$request->file('file')->store('/public/img');
             $question->file = str_replace('public/',"",$question->file);
         }
@@ -98,19 +80,20 @@ class QuestionController extends Controller
 
         for ($i = 0; $i < 4; $i++) {
             $answer = new Answer();
-            if($request->file('answer_file.'.$i)){
-                // $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
-                // $answer->answer_file ='/public/storage/'.$path;
-
-                $answer->answer_file = '/storage/'.$request->file('answer_file.' . $i)->store('/public/answer');
-                $answer->answer_file = str_replace('public/',"",$answer->answer_file);
-
+            if($request->file('explain_file')){
+                $answer->explain_file = '/storage/'.$request->file('explain_file')->store('/public/explain');
+                $answer->explain_file = str_replace('public/',"",$answer->explain_file);
+            }
+            if($request->file('help_file')){
+                $answer->help_file = '/storage/'.$request->file('help_file')->store('/public/help');
+                $answer->help_file = str_replace('public/',"",$answer->help_file);
             }
             $answer->question_id = $question->id;
-            $answer->explain = $request->explain;
-            $answer->help = $request->help;
+            $answer->explain = $request->input('explain');
+            $answer->explain_type = $request->explain_type;
+            $answer->help_type = $request->help_type;
+            $answer->help = $request->input('help');
             $answer->right = $request->input('right') == $i;
-            $answer->answer_type = $request->input('answer_type.' . $i);
             $answer->answer_text = $request->input('answer_text.' . $i);
             $answer->save();
         }

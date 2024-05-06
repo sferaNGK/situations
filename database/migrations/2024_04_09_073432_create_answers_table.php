@@ -14,12 +14,16 @@ return new class extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->string('answer_text')->nullable();
-            $table->text('answer_file')->nullable();
-            $table->string('answer_type');
+            $table->string('answer_text');
             $table->string('right');
-            $table->string('help');
-            $table->text('explain');
+
+            $table->string('help_type');
+            $table->string('help')->nullable();
+            $table->text('help_file')->nullable();
+
+            $table->string('explain_type');
+            $table->string('explain')->nullable();
+            $table->text('explain_file')->nullable();
             $table->foreignIdFor(Question::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

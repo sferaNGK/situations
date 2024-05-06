@@ -5,24 +5,24 @@
 @endsection
 @section('content')
 
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
-        <div class="col-10">
-            <div class="d-flex justify-content-between mt-4 col-5">
+        <div class="col-12 d-flex flex-column justify-content-start align-items-start">
+            <div class="container d-flex justify-content-start gap-5 mt-4 col-12">
                  <h3>{{$category->title}}</h3>
                  <a class="btn btn-primary" href="{{ route('add', ['category'=>$category->id, 'question'=>$question ? $question->id : '']) }}">Создать ситуацию +</a>
 
             </div>
 
-            <div class="container-fluid d-flex flex-wrap align-items-start">
+            <div class="container-fluid d-flex flex-wrap justify-content-center col-12">
                 @foreach($questions as $question)
 
-                        <div class="card m-3" style="width: 300px;">
+                        <div class="card col-3 m-3">
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <div class="d-flex flex-wrap">
                                     <p class="card-title text-truncate">{{$question->text}}</p>
                                     @if($question->file)
-                                        <img src="{{ asset($question->file) }}" class="col-3" alt="">
+                                        <img src="{{ asset($question->file) }}" style="width: 5rem; heigth:2rem; object-fit:cover;" alt="">
                                     @endif
                                 </div>
                                 <div class="d-flex flex-row">
