@@ -1,7 +1,7 @@
 <?php $__env->startSection('title'); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
-<div class="container">
+<div class="container" id="Login">
     <div class="row">
         <div class="col-12 d-flex justify-content-center align-items-center h-100">
 
@@ -18,61 +18,16 @@
                      <?php endif; ?>
                  </div>
             <div class="p-4">
-                <form action="<?php echo e(route('auth')); ?>" method="post">
-                    <?php echo csrf_field(); ?>
-                    <?php echo method_field('post'); ?>
+                <form @submit.prevent="loginAuth" id="login_form" class="col-12">
                     <div class="mb-3">
-                        <input type="text" class="form-control <?php $__errorArgs = ['login'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" placeholder="Логин" name="login">
-                        <div class="invalid-feedback">
-                            <?php $__errorArgs = ['login'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <?php echo e($message); ?>
-
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
+                      <label for="exampleInputEmail1" class="form-label">Логин</label>
+                      <input name="login" type="text" class="form-control" id="exampleInputEmail1">
                     </div>
-
                     <div class="mb-3">
-                        <input type="password" class="form-control <?php $__errorArgs = ['password'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" placeholder="Пароль" name="password">
-                        <div class="invalid-feedback">
-                            <?php $__errorArgs = ['password'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <?php echo e($message); ?>
-
-                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        </div>
+                      <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                      <input name="password" type="password" class="form-control" id="exampleInputPassword1">
                     </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary">Авторизоваться</button>
-                        
-                    </div>
-
+                    <button type="submit" class="btn btn-primary">Войти</button>
                 </form>
             </div>
             </div>
@@ -80,6 +35,36 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 </div>
+<script>
+    const app = {
+        data() {
+            return {
+                errors:[],
+                message:'',
+            }
+        },
+        methods: {
+            async loginAuth(){
+                let form = document.getElementById('login_form');
+                let form_data = new FormData(form);
+                const response = await fetch('<?php echo e(route('login')); ?>',{
+                    method: 'post',
+                    headers:{
+                        'X-CSRF-TOKEN':'<?php echo e(csrf_token()); ?>',
+                    },
+                    body:form_data
+                });
+                if(response.status===200){
+                      window.location = response.url;
+                }
+            }
+        },
+        mounted() {
+
+        },
+    }
+    Vue.createApp(app).mount('#Login');
+</script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layout.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\onixc\Downloads\situations\resources\views/welcome.blade.php ENDPATH**/ ?>
