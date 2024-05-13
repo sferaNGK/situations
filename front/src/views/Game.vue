@@ -1,24 +1,28 @@
 <template>
 <modal :v-bind:modalTrue="modalTrue" v-if="modalTrue == true"/>
-<modalWrong :v-bind:modalWrongTrue="modalWrongTrue" v-on:closeHelp="closeHelp" :help="help" :help_file="help_file" :help_type="help_type" v-if="modalWrongTrue == true"/>
+<modalWrong :v-bind:modalWrongTrue="modalWrongTrue" v-on:closeHelpWrong="closeHelpWrong" :help="help" :help_file="help_file" :help_type="help_type" v-if="modalWrongTrue == true"/>
 <modalRight :v-bind:modalRightTrue="modalRightTrue" v-on:closeHelp="closeHelp" :answer="answer" :answer_type="answer_type" :answer_file="answer_file" v-if="modalRightTrue == true"/>
 
-<div style="height:100vh; background: url(https://abrakadabra.fun/uploads/posts/2022-02/1644770314_44-abrakadabra-fun-p-fon-dlya-viktorini-62.jpg) no-repeat center center fixed;  background-size: cover;  -webkit-background-size: cover;  -moz-background-size: cover;  -o-background-size: cover;">
+<div style="height:100vh;">
+    <img class="col-12 h-100" src="/src/assets/images/Background.png" style="z-index: -10; position:absolute;">
     <div class="block col-12 h-100">
-        <div class="col-12 h-50 d-flex align-items-center justify-content-center">
-            <div class="col-10 gap-1 h-75 p-2 d-flex align-items-center justify-content-center rounded text-white" style="box-shadow: 12px 11px 40px 26px rgba(34, 60, 80, 0.58); background-color:#2e404582; overflow-y:auto">
-                <div class="col-4 d-flex align-items-center justify-content-center">
-                    <img v-if="showQue.file != null" style="width:15rem; height: 15rem; object-fit:contain;" :src="link + showQue.file">
+        <div class="col-12 d-flex align-items-center justify-content-center position-relative" style="height: 68%;">
+            <div class="col-10 h-100 p-2 flex-column d-flex align-items-center rounded text-white">
+                <div class="col-4 d-flex align-items-center justify-content-center" style="margin-top: 5%;">
+                    <img v-if="showQue.file != null" style="width:65rem; height: 25rem; object-fit:contain;" :src="link + showQue.file">
                 </div>
-                <div class="col-7 d-flex align-items-center justify-content-center">
-                    <h3 v-if="showQue.text != null" class=" text-wrap text-justify" style="font-size: 24px;">{{ showQue.text }}</h3>
+                <div class="col-7 d-flex align-items-end justify-content-center" style="height: 20%;">
+                    <h3 v-if="showQue.text != null" class=" text-wrap text-center" style="font-size: 16px;">{{ showQue.text }}</h3>
                 </div>
             </div>
         </div>
 
-        <div class="col-12 h-50 d-flex gap-5 flex-row flex-wrap align-items-center justify-content-center p-5" style="margin-top:-2%">
-            <div class="col-5 h-50 d-flex flex-row" v-for="ans in showAnsw">
-                <button @click="CheckRight(ans)" :id="`Button_${ans.id}`" class="btn col-12 border rounded text-white" style="box-shadow: 12px 11px 40px 14px rgba(34, 60, 80, 0.5); background-color:#2e404582; font-size:20px;">
+        <div class="col-12 h-25 d-flex flex-row flex-wrap align-items-center justify-content-center">
+            <div class="col-6 h-50 d-flex align-items-center justify-content-center flex-row" v-for="(ans, key) in showAnsw">
+                <button @click="CheckRight(ans)" v-if="key > 1" :id="`Button_${ans.id}`" class="btn rounded text-white" style="width:70%; height:80%; margin-top:10%">
+                    <p v-if="ans.answer_text" style="font-weight: 700;">{{ ans.answer_text }}</p>
+                </button>
+                <button @click="CheckRight(ans)" v-else :id="`Button_${ans.id}`" class="btn rounde text-white" style="width:70%; height:80%; margin-top:3%">
                     <p v-if="ans.answer_text" style="font-weight: 700;">{{ ans.answer_text }}</p>
                 </button>
             </div>
@@ -61,6 +65,8 @@ export default {
             answer:'',
             answer_file:'',
             answer_type:'',
+
+            anse:[],
         }
     },
     methods:{
@@ -94,7 +100,8 @@ export default {
                 this.answer = ans.explain;
                 this.answer_file = ans.explain_file;
                 this.answer_type = ans.explain_type;
-                this.animateBlokc(ans);
+                this.anse = ans;
+                // this.animateBlokc(ans);
             } else if(ans.right == this.RightAnswer && this.length + 1 == this.questions.length){
                 this.length += 1;
                 let btn = document.getElementById('Button_'+ans.id);
@@ -113,10 +120,14 @@ export default {
             }
         },
         closeHelp(){
-            this.modalWrongTrue = false;
             this.modalRightTrue = false;
+            this.animateBlokc(this.anse, this.modalRightTrue);
         },
-        animateBlokc(ans){
+        closeHelpWrong(){
+            this.modalWrongTrue = false;
+        },
+        animateBlokc(ans, modal){
+
             let block =  document.querySelector('.block');
             let btn = document.getElementById('Button_'+ans.id);
             setTimeout(() => {
@@ -130,6 +141,8 @@ export default {
                 }, 800);
                 block.classList.remove('hide');
                 block.classList.remove('apear');
+
+
         }
     },
     mounted(){

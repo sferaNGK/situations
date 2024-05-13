@@ -3,17 +3,17 @@
         <div class="modal-backdrop show"></div>
         <div class="modal show d-block" tabindex="-1">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="width: 80vh; height:60vh; margin-left:-25%">
                     <div class="modal-header d-flex align-items-center justify-content-center">
                         <h5 class="modal-title">
                             Ответ Верный
                         </h5>
                     </div>
                     <div class="modal-body d-flex align-items-center justify-content-center">
-                        <p v-if="answer_type == 'Текст'" class="text-black">
+                        <p v-if="answer_type == 'Текст'" class="text-black" style="font-size: 24px;">
                           {{ answer }}
                         </p>
-                        <img style="width: auto; max-height: 100%; object-fit:contain;" v-if="answer_type == 'Изображение'" :src="link + answer_file">
+                        <img style="width: 80vh; max-height: 100%; object-fit:contain;" v-if="answer_type == 'Изображение'" :src="link + answer_file">
                         <audio controls v-if="answer_type == 'Аудио'" class="w-75">
                             <source :src="link + answer_file" type="audio/mp3">
                         </audio>
@@ -22,7 +22,7 @@
                         </video>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button class="btn btn-primary w-50 h-50" @click="CloseModal" data-bs-dismiss="modal">Продолжить</button>
+                        <button class="btn btn-primary w-50 h-100" @click="CloseModal" data-bs-dismiss="modal">Продолжить</button>
                     </div>
                 </div>
             </div>

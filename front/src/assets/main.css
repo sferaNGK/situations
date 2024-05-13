@@ -1,5 +1,9 @@
 @import './base.css';
 @import 'bootstrap';
+@import url('./font.css');
+*{
+    font-family: "Montserrat";
+}
 #app {
   font-weight: normal;
 }
