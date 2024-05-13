@@ -1,5 +1,4 @@
 @extends('layout.app')
-@extends('layout.nuvbar')
 @section('title')
 Создание ситуации
 @endsection

@@ -22,12 +22,20 @@ class PageController extends Controller
         return view('welcome');
     }
 
-    public function situationPage($id){
-        $category = Category::query()->where('id', $id)->first();
-        $question = Question::query()->where('category_id', $id)->first();
-        $categories = Category::all();
-        $questions = Question::query()->where('category_id', $id)->latest('created_at')->get();
-        return view('situations', compact('questions', 'categories', 'question', 'category'));
+    public function situationPage(Request $request){
+        $categories = Category::query()->where('id', $request->id)->first();
+        return redirect()->route('situationPage1',['categories'=>$categories]);
+    }
+    public function situationPage1(Category $categories){
+        return view('situations',['categories'=>$categories]);
+    }
+
+    public function detailPost(Request $request){
+        $questions = Question::query()->where('id', $request->id)->first();
+        return redirect()->route('detailGet', ['questions'=>$questions]);
+    }
+    public function detailGet(Answer $questions){
+        return view('detail', compact('questions'));
     }
 
     public function detail($id){

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -41,7 +42,7 @@ class CategoryController extends Controller
         $category->title = $request->title;
         $category->description = $request->description;
         $category->save();
-        return redirect()->back();
+        return response()->json('Категория добавлена',200);
     }
 
     public function search(Request $request)
@@ -68,7 +69,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $categories = Category::all();
+        return response()->json($categories);
     }
 
     /**
@@ -82,20 +84,21 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function categoryUpdate(Request $request)
     {
+        $category = Category::query()->where('id',$request->id)->first();
         $category->title = $request->title;
         $category->description = $request->description;
-        $category->update();
-        return redirect()->back();
+        return response()->json('Категория изменена',200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request)
     {
+        $category = Category::query()->where('id',$request->id)->first();
         $category->delete();
-        return redirect()->back();
+        return response()->json('Категория удалена',200);
     }
 }

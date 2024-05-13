@@ -6,45 +6,47 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function reg(Request $request){
-
-            $request->validate([
-                'login'=>['required', 'regex:/[A-Za-z -]/u'],
-                'password'=>['required','confirmed'],
-                'rule'=>['required'],
-            ]);
-
-            $user = new User();
-            $user->login=$request->login;
-            $user->password=md5($request->password);
-            $user->save();
-
-            if($user){
-                Auth::login($user);
-            }
-
-        return redirect()->route('category');
-    }
-    public function auth(Request $request){
-        $request->validate([
+    public function register(Request $request){
+        $valid = Validator::make($request->all(),[
             'login'=>['required'],
-            'password'=>['required']
+            'password'=>['required'],
+        ],[
+            'login.required'=>'Поле обязательно',
+            'password.required'=>'Поле обязательно',
         ]);
-        $user = User::query()->
-        where('login',$request->login)->
-        where('password', md5($request->password))->first();
+        if($valid->fails()){
+            return response()->json($valid->errors(),400);
+        }
 
+        $user = new User();
+        $user->login=$request->login;
+        $user->password=md5($request->password);
+        $user->save();
 
+        return redirect()->route('welcome');
+    }
+
+    public function login(Request $request){
+        $valid = Validator::make($request->all(),[
+            'login'=>['required'],
+            'password'=>['required'],
+        ],[
+            'login.required'=>'Поле обязательно',
+            'password.required'=>'Поле обязательно',
+        ]);
+        if($valid->fails()){
+            return response()->json($valid->errors(),400);
+        }
+        $user = User::query()->where('login',$request->login)->where('password',md5($request->password))->first();
         if($user){
             Auth::login($user);
-            if($user->role == 0){
-                return redirect()->route('category');
-            }
+            return redirect()->route('category');
         }else{
-            return redirect()->route('welcome')->with('error', 'Неверный логин или пароль');
+            return redirect()->back();
         }
     }
 

@@ -25,7 +25,8 @@ class AnswerController extends Controller
         return response()->json($answers);
     }
 
-    public function getAnswers(Request $request){
+
+    public function getAnswersDetail(Request $request){
         $answer = Answer::query()->where('question_id', $request->id)->get();
         return response()->json($answer);
     }
@@ -45,9 +46,10 @@ class AnswerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AnswerOne $answerOne)
+    public function show(Answer $answer)
     {
-        //
+        $answer = Answer::all();
+        return response()->json($answer);
     }
 
     /**

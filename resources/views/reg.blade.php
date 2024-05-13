@@ -2,7 +2,7 @@
 @section('title')
 @endsection
 @section('content')
-<div class="container">
+<div class="container" id="Reg">
     <div class="row">
         <div class="col-12 d-flex align-items-center justify-content-center">
 
@@ -10,46 +10,16 @@
                  <h3 class="p-2" style="text-align: center">Регистрация</h3>
 
             <div class="p-4">
-                <form action="{{ route('reg') }}" method="post">
-                    @csrf
-                    @method('post')
+                <form @submit.prevent="AuthAdmin" id="reg_form" class="col-12">
                     <div class="mb-3">
-                        <input type="text" class="form-control @error('login') is-invalid @enderror" placeholder="Логин" name="login">
-                        <div class="invalid-feedback">
-                            @error('login')
-                            {{ $message }}
-                            @enderror
-                        </div>
+                      <label for="exampleInputEmail1" class="form-label">Логин</label>
+                      <input name="login" type="text" class="form-control" id="exampleInputEmail1">
                     </div>
-
                     <div class="mb-3">
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Пароль" name="password">
-                        <div class="invalid-feedback">
-                            @error('password')
-                            {{ $message }}
-                            @enderror
-                        </div>
+                      <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                      <input name="password" type="password" class="form-control" id="exampleInputPassword1">
                     </div>
-
-                    <div class="mb-3">
-                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Повторите пароль" name="password_confirmation">
-                        <div class="invalid-feedback">
-                            @error('password_confirmation')
-                            {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <input type="checkbox" id="rule" name="rule" class="form-check-input @error('rule') is-invalid @enderror" >
-                        <label for="rule">Согласие на обработку ПД</label>
-                        <div class="invalid-feedback">
-                            @error('rule')
-                            {{$message}}
-                            @enderror
-                        </div>
-                    </div>
-                        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
                 </form>
             </div>
             </div>
@@ -57,4 +27,34 @@
         </div>
     </div>
 </div>
+<script>
+    const app = {
+        data() {
+            return {
+                errors:[],
+                message:'',
+            }
+        },
+        methods: {
+            async AuthAdmin(){
+                let form = document.getElementById('reg_form');
+                let form_data = new FormData(form);
+                const response = await fetch('{{route('register')}}',{
+                    method: 'post',
+                    headers:{
+                        'X-CSRF-TOKEN':'{{ csrf_token() }}',
+                    },
+                    body:form_data
+                });
+                if(response.status===200){
+                      window.location = response.url;
+                }
+            }
+        },
+        mounted() {
+
+        },
+    }
+    Vue.createApp(app).mount('#Reg');
+</script>
 @endsection

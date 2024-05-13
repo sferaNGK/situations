@@ -2,7 +2,7 @@
 @section('title')
 @endsection
 @section('content')
-<div class="container">
+<div class="container" id="Login">
     <div class="row">
         <div class="col-12 d-flex justify-content-center align-items-center h-100">
 
@@ -18,31 +18,16 @@
                      @endif
                  </div>
             <div class="p-4">
-                <form action="{{ route('auth') }}" method="post">
-                    @csrf
-                    @method('post')
+                <form @submit.prevent="loginAuth" id="login_form" class="col-12">
                     <div class="mb-3">
-                        <input type="text" class="form-control @error('login') is-invalid @enderror" placeholder="Логин" name="login">
-                        <div class="invalid-feedback">
-                            @error('login')
-                            {{ $message }}
-                            @enderror
-                        </div>
+                      <label for="exampleInputEmail1" class="form-label">Логин</label>
+                      <input name="login" type="text" class="form-control" id="exampleInputEmail1">
                     </div>
-
                     <div class="mb-3">
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Пароль" name="password">
-                        <div class="invalid-feedback">
-                            @error('password')
-                            {{ $message }}
-                            @enderror
-                        </div>
+                      <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                      <input name="password" type="password" class="form-control" id="exampleInputPassword1">
                     </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary">Авторизоваться</button>
-                        {{-- <a href="{{ route('regPage') }}" class="p-2">Еще не зарегистрированы?</a> --}}
-                    </div>
-
+                    <button type="submit" class="btn btn-primary">Войти</button>
                 </form>
             </div>
             </div>
@@ -50,4 +35,34 @@
         </div>
     </div>
 </div>
+<script>
+    const app = {
+        data() {
+            return {
+                errors:[],
+                message:'',
+            }
+        },
+        methods: {
+            async loginAuth(){
+                let form = document.getElementById('login_form');
+                let form_data = new FormData(form);
+                const response = await fetch('{{route('login')}}',{
+                    method: 'post',
+                    headers:{
+                        'X-CSRF-TOKEN':'{{ csrf_token() }}',
+                    },
+                    body:form_data
+                });
+                if(response.status===200){
+                      window.location = response.url;
+                }
+            }
+        },
+        mounted() {
+
+        },
+    }
+    Vue.createApp(app).mount('#Login');
+</script>
 @endsection

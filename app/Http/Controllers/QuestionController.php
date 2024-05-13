@@ -9,6 +9,47 @@ use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
+    public function editQuestionAndAnswer(Request $request){
+        $question = Question::query()->where('id', $request->id)->first();
+        $answers = Answer::query()->where('question_id', $request->id)->get();
+
+        // $question->type = $request->type;
+        // $question->text = $request->text;
+        // if($request->file('file')){
+        //     $question->file = '/storage/'.$request->file('file')->store('/public/img');
+        //     $question->file = str_replace('public/',"",$question->file);
+        // }
+
+        // foreach($answers as $answer){
+        //     dd($answer);
+        //     $answer->right = $request->right == $answer->right;
+        //     $answer->update();
+        // }
+        foreach($answers as $key => $answ){
+            if($request->file('answer_file.'.$key)!==null){
+
+                // $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
+                // $answer->answer_file ='/public/storage/'.$path;
+
+                $answ->answer_file = '/storage/'.$request->file('answer_file' . $key)->store('/public/answer');
+                $answ->answer_file = str_replace('public/',"",$answ->answer_file);
+
+                $answ->answer_text = null;
+                }else{
+                    $answ->answer_text = $request->input('answer_text.' .$key);
+                    $answ->answer_file = null;
+                }
+            $answ->explain = $request->explain;
+            $answ->help = $request->help;
+            if($request->input('right') == $key){
+                $answ->right = $request->input('right') == $key;
+            } else if($request->input('right') != $key){
+                $answ->right = 0;
+            }
+            $answ->answer_type = $request->input('answer_type.' . $key);
+            $answ->update();
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -40,6 +81,11 @@ class QuestionController extends Controller
         $question = Question::query()->where('category_id',$request->id)->get();
         return response()->json($question);
     }
+    public function getQuestionDetail(Request $request){
+        $question = Question::query()->where('id',$request->id)->get();
+        return response()->json($question);
+    }
+
     public function getAnswers(Request $request){
         $answers = [];
         $question = Question::query()->where('category_id',$request->id)->get();
@@ -51,9 +97,8 @@ class QuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Category $category)
+    public function store(Request $request)
     {
-
         /**
          * 1. Создаём вопрос. Получаем его ID.
          * 2. В цикле перебираем все ответы, и каждый записываем в БД.
@@ -75,7 +120,7 @@ class QuestionController extends Controller
 
         $question->text = $request->text;
         $question->type = $request->type;
-        $question->category_id = $category->id;
+        $question->category_id = $request->id;
         $question->save();
 
         for ($i = 0; $i < 4; $i++) {
@@ -98,15 +143,16 @@ class QuestionController extends Controller
             $answer->save();
         }
 
-        return redirect()->route('situationPage', $category->id)->with('ok', 'Ситуация сохранена');
+        return response()->json('Вопрос добавлен', 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Question $question)
+    public function show(Question $question, Request $request)
     {
-        //
+        $question = Question::with('category')->where('category_id',$request->id)->get();
+        return response()->json($question);
     }
 
     /**
@@ -120,47 +166,43 @@ class QuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Question $question)
-
+    public function questionUpdate(Request $request)
     {
+        $question = Question::query()->where('id', $request->id)->first();
         if($request->file('file')!==null){
-            // $path = $request->file('file')->store('file');
-            // $question->file = '/public/storage/'.$path;
-
             $question->file = '/storage/'.$request->file('file')->store('/public/img');
             $question->file = str_replace('public/',"",$question->file);
-
-            $question->text =null;
-        }else{
-            $question->text = $request->text;
         }
-        $question->type = $request->type;
+        $question->text = $request->text;
+        if($request->type){
+            $question->type = $request->type;
+        }
         $question->update();
 
-        $answers = Answer::query()->where('question_id',$question->id)->get();
+        // $answers = Answer::query()->where('question_id',$question->id)->get();
 
-        foreach($answers as $key => $answ){
-            if($request->file('answer_file.'.$key)!==null){
+        // foreach($answers as $key => $answ){
+        //     if($request->file('answer_file.'.$key)!==null){
 
-                // $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
-                // $answer->answer_file ='/public/storage/'.$path;
+        //         // $path = $request->file('answer_file.'.$i)->store('answer_file'.$answer->id);
+        //         // $answer->answer_file ='/public/storage/'.$path;
 
-                $answ->answer_file = '/storage/'.$request->file('answer_file' . $key)->store('/public/answer');
-                $answ->answer_file = str_replace('public/',"",$answ->answer_file);
+        //         $answ->answer_file = '/storage/'.$request->file('answer_file' . $key)->store('/public/answer');
+        //         $answ->answer_file = str_replace('public/',"",$answ->answer_file);
 
-                $answ->answer_text = null;
-                }else{
-                    $answ->answer_text = $request->input('answer_text.' .$key);
-                    $answ->answer_file = null;
-                }
-                $answ->explain = $request->explain;
-                $answ->help = $request->help;
-                if($request->input('right')){
-                    $answ->right = $request->input('right') == $key;
-                }
-                $answ->answer_type = $request->input('answer_type.' . $key);
-                $answ->update();
-        }
+        //         $answ->answer_text = null;
+        //         }else{
+        //             $answ->answer_text = $request->input('answer_text.' .$key);
+        //             $answ->answer_file = null;
+        //         }
+        //         $answ->explain = $request->explain;
+        //         $answ->help = $request->help;
+        //         if($request->input('right')){
+        //             $answ->right = $request->input('right') == $key;
+        //         }
+        //         $answ->answer_type = $request->input('answer_type.' . $key);
+        //         $answ->update();
+        // }
 
 
 
@@ -207,15 +249,16 @@ class QuestionController extends Controller
         //     $answer->answer_type = $request->input('answer_type.' . $id);
         //     $answer->update();
         // }
-        return redirect()->route('situationPage', $question->category_id);
+        return response()->json('Вопрос изменен', 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Question $question)
+    public function destroy(Request $request)
     {
+        $question = Question::query()->where('id',$request->id)->first();
         $question->delete();
-        return redirect()->back();
+        return response()->json('Вопрос удален', 200);
     }
 }
