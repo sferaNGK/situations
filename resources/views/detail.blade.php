@@ -30,114 +30,6 @@
                     <img :src="helpImg" style="width: 15%; object-fit:cover" srcset="">
                 </div>
 
-                {{-- <div class="d-flex justify-content-between col-4 mt-3">
-                    <div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ $question->id }}">
-                            Редактировать
-                        </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal{{ $question->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Редактирование</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('questionUpdate' , ['question'=>$question, 'answer'=>$answer]) }}" class="mt-3" method="post" enctype="multipart/form-data">
-                                        @csrf
-                                        @method('post')
-
-                                        <div class="question">
-                                            <select class="form-select mb-3" name="type" id="questionType">
-                                                <option>Текст</option>
-                                                <option>Изображение</option>
-                                                <option>Аудио</option>
-                                                <option>Видео</option>
-                                            </select>
-
-
-                                            <div class="mb-3">
-                                                <textarea  class="form-control @error('question_text') is-invalid @enderror" style="display: block" id="question_textarea" name="text">{{ $question->text }}</textarea>
-                                            </div>
-                                            <input type="file" name="file" class="form-control  @error('question_file') is-invalid @enderror" style="display: none" id="question_input">
-                                            <div class="invalid-feedback">
-                                                @error('question_text')
-                                                    {{ $message }}
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        @for ($i=0; $i < 4; $i++)
-
-                                        <input type="hidden" name="id[{{ $i }}]" value="{{ $answers[$i]->id }}">
-
-                                            <div class="row">
-                                                <div class="col-2 d-flex justify-content-center align-items-center">
-                                                    <label class="d-flex justify-content-between">
-                                                       <div> {{ $i + 1 }}) </div><input type="radio"   style=" transform: scale(1.7);
-                                                        margin-left:15px;margin-top:5px" class="@error('right') is-invalid @enderror" name="right" value="{{ $i }}">
-
-                                                    <div class="p-3 invalid-feedback">
-                                                        @error('right')
-                                                        {{ $message }}
-                                                        @enderror
-                                                    </div>
-                                                </label>
-                                                </div>
-                                                <div class="col-10">
-                                                    <select class="form-select mt-4" name="answer_type[{{ $i }}]" onchange="changeTypeAnswer(this.value, {{ $i }})">
-                                                        <option>Текст</option>
-                                                        <option>Изображение</option>
-                                                        <option>Аудио</option>
-                                                        <option>Видео</option>
-                                                    </select>
-
-                                                    <div class="mt-2">
-                                                        <textarea type="text" style="display: block" class="form-control @error('answer_text.' . $i)
-                                                        is-invalid @enderror" id="answer_area_{{ $i }}" name="answer_text[{{ $i }}]">{{ $answers[$i]->answer_text }}</textarea>
-                                                        <input type="file" style="display: none" class="form-control @error('answer_file.' . $i)
-                                                        is-invalid @enderror" name="answer_file[{{ $i }}]" id="answer_input_{{ $i }}">
-                                                        <div class="invalid-feedback">
-                                                            @error('answer_text.' . $i)
-                                                            {{ $message }}
-                                                            @enderror
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        @endfor
-
-                                        <div class="mb-4">
-                                            <h6 for="explain"> Введите объяснение:</h6>
-                                            <textarea type="text" name="explain" id="explain" class="form-control @error('explain') is-invalid @enderror" placeholder="Пояснение">{{$answer->explain}}</textarea>
-                                            <div class="invalid-feedback">
-                                            @error('explain')
-                                            {{ $message }}
-                                            @enderror
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-4">
-                                            <h6 for="help"> Введите подсказку:</h6>
-                                            <textarea type="text" name="help" id="help" class="form-control @error('help') is-invalid @enderror" placeholder="Подсказка">{{$answer->help}}</textarea>
-                                            <div class="invalid-feedback">
-                                            @error('help')
-                                            {{ $message }}
-                                            @enderror
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Изменить</button>
-                                    </form>
-                                </div>
-
-                            </div>
-                            </div>
-                        </div>
-
-                </div> --}}
                 <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Изменить
                   </button>
@@ -146,9 +38,11 @@
                   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-header d-flex flex-column">
+                            <div class="alert alert-success w-100" v-if="message != ''">
+                                @{{ message }}
+                            </div>
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение ситуации</h1>
                         </div>
                         <form @submit.prevent="EditSituation" id="form_edit">
                             <div class="modal-body" v-for="question in questions">
@@ -219,7 +113,7 @@
 
                             </div>
                             <div class="modal-footer">
-                              <button type="submit" class="btn btn-primary">Save changes</button>
+                              <button type="submit" class="btn btn-primary">Сохранить</button>
                             </div>
                         </form>
                       </div>
@@ -274,6 +168,7 @@
                         this.message = '';
                     }, 500);
                 }
+                form.reset();
                 this.getQuestions();
                 this.getAnswers();
             },
