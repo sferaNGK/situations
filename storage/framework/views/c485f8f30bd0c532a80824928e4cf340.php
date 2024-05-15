@@ -12,7 +12,7 @@
             <div>
                 <div class="d-flex justify-content-between mt-5 col-10">
                         <input class="form-control" type="search" v-model="SearchValue" id="title" name="search" placeholder="Искать игру" aria-label="Search">
-                        <button href="" class="btn bg-body-secondary col-2" style="margin-left:10px"> Все Игры</button>
+                        <button @click="ClearSearch" class="btn bg-body-secondary col-2" style="margin-left:10px"> Все Игры</button>
                 </div>
             </div>
 
@@ -27,9 +27,11 @@
             <div class="modal fade" id="exampleModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header d-flex flex-column">
+                    <div class="alert alert-success w-100" v-if="message != ''">
+                        {{ message }}
+                    </div>
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Добавление игры</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form @submit.prevent="CategoryAdd" id="form_add" class="mt-3" method="post">
@@ -38,6 +40,12 @@
                             </div>
                             <div class="mb-3">
                                 <textarea class="form-control" name="description" placeholder="Описание" cols="30" rows="5"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <select name="type" class="form-control">
+                                    <option value="Программисты">Программисты</option>
+                                    <option value="Преподователи">Преподователи</option>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Сохранить</button>
                         </form>
@@ -48,12 +56,12 @@
             </div>
 
             <div class="container-fluid d-flex flex-wrap align-items-sm-start mt-3">
-                <div class="card m-3 pb-2" v-for="category in categories">
+                <div class="card m-3 pb-2" v-for="category in Search">
                     <div class="card-body">
                         <h5 class="card-title">{{category.title}}</h5>
                         <a @click="show_page(category.id)" class="btn btn-outline-dark">Открыть</a>
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="`#exampleModal_${category.id}`">
+                        <button type="button" class="btn btn-primary ms-2 me-2" data-bs-toggle="modal" :data-bs-target="`#exampleModal_${category.id}`">
                             Редактировать
                         </button>
 
@@ -61,9 +69,11 @@
                         <div class="modal fade" :id="`exampleModal_${category.id}`" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header d-flex flex-column">
+                                    <div class="alert alert-success w-100" v-if="message != ''">
+                                        {{ message }}
+                                    </div>
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Редактирование</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form @submit.prevent="EditCategory(category.id)" class="mt-3" :id="`form_edit${category.id}`">
@@ -176,12 +186,17 @@
             async getCategories(){
                 let response_categ = await fetch('<?php echo e(route('GetCategories')); ?>');
                 this.categories = await response_categ.json();
+            },
+            ClearSearch(){
+                this.SearchValue = '';
             }
         },
         computed:{
             Search(){
                 if(this.SearchValue == ''){
-
+                    return [...this.categories];
+                } else{
+                    return this.categories.filter(cat=>cat.title.toLowerCase().includes(this.SearchValue.toLowerCase()));
                 }
             }
         },

@@ -15,9 +15,12 @@
           <div class="modal fade" id="exampleModalAddSit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header d-flex flex-column">
+                    <div class="alert alert-success w-100" v-if="message != ''">
+                        {{ message }}
+                    </div>
+                  <h5 class="modal-title" id="exampleModalLabel">Добавление ситуации</h5>
+
                 </div>
                 <form @submit.prevent="AddSituation" id="form_add">
                     <div class="modal-body">
@@ -144,7 +147,7 @@ unset($__errorArgs, $__bag); ?>" id="help_input">
 
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary">Save changes</button>
+                      <button type="submit" class="btn btn-primary">Сохранить</button>
                     </div>
                 </form>
               </div>
@@ -160,7 +163,7 @@ unset($__errorArgs, $__bag); ?>" id="help_input">
                 </div>
                 <a @click="DetailPage(question.id)" class="btn btn-outline-dark">Подробнее</a>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="`#exampleModal${question.id}`">
+                <button type="button" class="btn btn-primary ms-2 me-2" data-bs-toggle="modal" :data-bs-target="`#exampleModal${question.id}`">
                     Редактировать
                 </button>
 
@@ -168,9 +171,11 @@ unset($__errorArgs, $__bag); ?>" id="help_input">
                 <div class="modal fade" :id="`exampleModal${question.id}`" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header d-flex flex-column">
+                        <div class="alert alert-success w-100" v-if="message != ''">
+                            {{ message }}
+                        </div>
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Редактирование</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form @submit.prevent="EditSituation(question.id)"  class="mt-3" :id="`form_edit${question.id}`">
@@ -207,7 +212,7 @@ unset($__errorArgs, $__bag); ?>" id="help_input">
             </div>
         </div>
     </div>
-    
+
   </div>
   <script>
     const app = {
@@ -246,7 +251,8 @@ unset($__errorArgs, $__bag); ?>" id="help_input">
             async AddSituation(){
                 let form = document.getElementById('form_add');
                 let form_data = new FormData(form);
-                form_data.append('id',this.questions[0].category.id);
+                let id = `<?php echo e($categories->id); ?>`;
+                form_data.append('id',id);
                 const response = await fetch('<?php echo e(route('situation')); ?>',{
                     method: 'post',
                     headers:{

@@ -29,7 +29,6 @@
                     <img :src="helpImg" style="width: 15%; object-fit:cover" srcset="">
                 </div>
 
-                
                 <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Изменить
                   </button>
@@ -38,9 +37,11 @@
                   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-header d-flex flex-column">
+                            <div class="alert alert-success w-100" v-if="message != ''">
+                                {{ message }}
+                            </div>
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение ситуации</h1>
                         </div>
                         <form @submit.prevent="EditSituation" id="form_edit">
                             <div class="modal-body" v-for="question in questions">
@@ -139,7 +140,7 @@ unset($__errorArgs, $__bag); ?>" id="help_input">
 
                             </div>
                             <div class="modal-footer">
-                              <button type="submit" class="btn btn-primary">Save changes</button>
+                              <button type="submit" class="btn btn-primary">Сохранить</button>
                             </div>
                         </form>
                       </div>
@@ -194,6 +195,7 @@ unset($__errorArgs, $__bag); ?>" id="help_input">
                         this.message = '';
                     }, 500);
                 }
+                form.reset();
                 this.getQuestions();
                 this.getAnswers();
             },
