@@ -5,21 +5,14 @@
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 80vh; height:60vh; margin-left:-25%">
                     <div class="modal-header d-flex align-items-center justify-content-center">
-                        <h5 class="modal-title fs-4">
-                            Ответ Верный
+                        <h5 class="modal-title">
+                            Добро пожаловать в игру: "{{game.title}}"
                         </h5>
                     </div>
                     <div class="modal-body d-flex align-items-center justify-content-center">
-                        <p v-if="answer_type == 'Текст'" class="text-black" style="font-size: 24px;">
-                          {{ answer }}
+                        <p class="text-black" style="font-size: 24px;">
+                          {{ game.description }}
                         </p>
-                        <img style="width: 80vh; max-height: 100%; object-fit:contain;" v-if="answer_type == 'Изображение'" :src="link + answer_file">
-                        <audio controls v-if="answer_type == 'Аудио'" class="w-75">
-                            <source :src="link + answer_file" type="audio/mp3">
-                        </audio>
-                        <video style="width: 100%; max-height: 100%; display: block; object-fit:cover; border-radius:15px;" controls v-if="answer_type == 'Видео'" :src="link + answer_file">
-                            <source :src="link + answer_file" type="video/mp4">
-                        </video>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button class="btn btn-primary w-50 h-100" @click="CloseModal" data-bs-dismiss="modal">Продолжить</button>
@@ -34,17 +27,8 @@ import { link } from '@/main';
 import { RouterLink, RouterView } from 'vue-router';
 export default {
     props:{
-        modalRightTrue:{
-            type:Boolean,
-        },
-        answer:{
-            type:String,
-        },
-        answer_file:{
-            type:String,
-        },
-        answer_type:{
-            type:String,
+        game:{
+            type:Object,
         },
     },
     data(){
@@ -54,7 +38,7 @@ export default {
     },
     methods:{
         CloseModal(){
-            this.$emit("closeHelp", false);
+            this.$emit("closeFirst", false);
         }
     },
     mounted(){

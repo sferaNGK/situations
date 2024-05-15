@@ -9,6 +9,7 @@
 }
 .right{
     transition: 0.2s;
+    color: white;
     background-color: rgba(39, 130, 49, 0.735) !important;
 }
 .hide{
@@ -18,4 +19,7 @@
 .apear{
     transform: scale(1);
     transition: 0.6s;
+}
+p{
+    margin: 0px !important;
 }

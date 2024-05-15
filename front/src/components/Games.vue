@@ -2,7 +2,7 @@
 <div class="container gap-5 d-flex align-items-center justify-content-center align-content-center flex-row flex-wrap" style="height: 100vh; width:100%;">
     <div v-for="game in games">
         <router-link :to="{path: '/game/'+game.id}">
-            <button type="button" class="btn btn-primary" style="height: 120px; width:350px; font-size:25px;">{{ game.title }}</button>
+            <button type="button" class="btn btn-primary" style="height: 120px; width:350px; font-size:25px; font-weight:700">{{ game.title }}</button>
         </router-link>
     </div>
 </div>
