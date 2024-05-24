@@ -11,12 +11,12 @@
                     </div>
                     <div class="modal-body">
                         <p>
-                          Поздравляем, вы прошли викторину
+                            Вы справились с заданием!!! 
                         </p>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <router-link to="/" class="w-100 text-center">
-                            <button class="btn btn-primary w-50 h-50">Вернутся на главную</button>
+                            <button class="btn btn-primary w-50 h-50">Вернуться на главную</button>
                         </router-link>
                     </div>
                 </div>
@@ -34,3 +34,13 @@ export default {
     }
 }
 </script>
+
+<style>
+    .modal-dialog{
+        width: 90%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>

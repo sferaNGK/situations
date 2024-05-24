@@ -12,13 +12,13 @@
         <div class="col-12 d-flex align-items-center justify-content-center position-relative" style="height: 65%;">
             <div class="col-12 h-100 p-2 flex-row d-flex align-items-center rounded text-white">
                 <div class="col-6 d-flex align-items-center justify-content-center">
-                    <img v-if="showQue.file != null" style="width:65rem; height: 25rem; object-fit:contain;" :src="link + showQue.file">
+                    <img v-if="showQue.file != null" style="width:45rem; max-height: 40rem; object-fit:contain;" :src="link + showQue.file">
                 </div>
-                <div class="col-6 d-flex flex-column align-items-ceneter gap-3 text-center justify-content-around">
+                <div class="col-6 d-flex h-100 flex-column align-items-center gap-3 text-center justify-content-around">
                     <div>
                         <img src="../assets/images/logoTeach.png" style="width:45%">
                     </div>
-                    <div class="col-11 d-flex align-items-center text-center justify-content-center p-4" style="background-color:white; color:black; border-radius:5rem; height:35vh;">
+                    <div class="col-11 d-flex align-items-center text-center justify-content-center p-4" style="background-color:white; color:black; border-radius:5rem; height:45vh;">
                         <!-- <h3 v-if="showQue.text != null" class=" text-wrap text-center" style="font-size: 20px; font-weight:700;">{{ showQue.text }}</h3> -->
                         <textarea readonly v-if="showQue.text != null" class="form-control d-flex align-items-center justify-content-center text-center w-100 h-75" style="font-size: 20px; font-weight:800; border:none;white-space: break-spaces;">{{ showQue.text }}</textarea>
                     </div>
@@ -28,7 +28,7 @@
 
         <div class="col-12 d-flex flex-row flex-wrap align-items-center justify-content-center" style="background-color: white; height:35%; border-radius:100px 100px 0 0">
             <div class="col-6 h-50 d-flex align-items-center justify-content-center flex-row" v-for="(ans, key) in showAnsw">
-                <button @click="CheckRight(ans)" :id="`Button_${ans.id}`" class="btn check text-center rounded w-75" style="background-color:#80f3c3;box-shadow: 10px 11px 16px 8px rgba(34, 60, 80, 0.42); height:10vh; overflow-y:auto">
+                <button @click="CheckRight(ans)" :id="`Button_${ans.id}`" class="btn check text-center rounded w-75" style="background-color:#80f3c3;box-shadow: 0px 5px 13px 3px rgba(34, 60, 80, 0.25); height:10vh; overflow-y:auto">
                     <p style="font-weight: 800; font-size:18px;">{{ ans.answer_text }}</p>
                 </button>
             </div>
@@ -39,7 +39,7 @@
     <div class="block col-12 h-100 d-flex flex-column align-items-around justify-content-evenly" v-if="gameType == 'Программисты'">
         <div class="col-12 d-flex align-items-center justify-content-center position-relative" style="height: 50%;">
             <div class="col-12 poistion-relation p-2 flex-row d-flex align-items-center justify-content-around rounded text-white">
-                <div class="position-absolute" style="margin-left: -70%; margin-top:-15%">
+                <div class="position-absolute" style="left: 5rem; top: 2rem;">
                     <img src="../assets/images/logoProg.png" style="width:45%">
                 </div>
                 <div class="col-6 d-flex align-items-center justify-content-center">
@@ -56,8 +56,8 @@
                 </div> -->
             </div>
             <div class="col-6 d-flex align-items-center justify-content-center flex-row" v-for="(ans, key) in showAnsw" style="margin-top: -5%;">
-                <button @click="CheckRight(ans)" :id="`Button_${ans.id}`" class="btn check text-center rounded w-75" style="background-color:#80f3c3;box-shadow: 10px 11px 16px 8px rgba(34, 60, 80, 0.42); height:10vh; overflow-y:auto">
-                    <p style="font-weight: 800; font-size:18px;">{{ ans.answer_text }}</p>
+                <button @click="CheckRight(ans)" :id="`Button_${ans.id}`" class="btn check text-center rounded w-75" style="background-color:#80f3c3;box-shadow: 0px 5px 13px 3px rgba(34, 60, 80, 0.25); height:10vh; overflow-y:auto">
+                    <p style="font-weight: 800; font-size:22px;">{{ ans.answer_text }}</p>
                 </button>
             </div>
         </div>
@@ -218,3 +218,4 @@ export default {
     },
 }
 </script>
+

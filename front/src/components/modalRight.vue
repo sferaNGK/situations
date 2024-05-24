@@ -5,12 +5,12 @@
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 80vh; height:60vh; margin-left:-25%">
                     <div class="modal-header d-flex align-items-center justify-content-center">
-                        <h5 class="modal-title fs-4">
-                            Ответ Верный
+                        <h5 class="modal-title fs-4" style="color: #117e31; font-weight: 800;">
+                            Ответ верный
                         </h5>
                     </div>
                     <div class="modal-body d-flex align-items-center justify-content-center">
-                        <p v-if="answer_type == 'Текст'" class="text-black" style="font-size: 24px;">
+                        <p v-if="answer_type == 'Текст'" class="text-black" style="font-size: 24px; text-align: center;">
                           {{ answer }}
                         </p>
                         <img style="width: 80vh; max-height: 100%; object-fit:contain;" v-if="answer_type == 'Изображение'" :src="link + answer_file">
@@ -62,3 +62,4 @@ export default {
     }
 }
 </script>
+

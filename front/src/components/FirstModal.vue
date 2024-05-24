@@ -3,14 +3,14 @@
         <div class="modal-backdrop show"></div>
         <div class="modal show d-block" tabindex="-1">
             <div class="modal-dialog">
-                <div class="modal-content" style="width: 80vh; height:60vh; margin-left:-25%">
+                <div class="modal-content" style="width: 80vh; height:60vh;">
                     <div class="modal-header d-flex align-items-center justify-content-center">
-                        <h5 class="modal-title">
+                        <h5 class="modal-title" style="font-weight: 800;">
                             Добро пожаловать в игру: "{{game.title}}"
                         </h5>
                     </div>
                     <div class="modal-body d-flex align-items-center justify-content-center">
-                        <p class="text-black" style="font-size: 24px;">
+                        <p class="text-black" style="font-size: 24px; text-align: center;">
                           {{ game.description }}
                         </p>
                     </div>

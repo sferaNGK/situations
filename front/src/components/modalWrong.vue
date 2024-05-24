@@ -5,12 +5,12 @@
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 80vh; height:60vh; margin-left:-25%">
                     <div class="modal-header d-flex align-items-center justify-content-center">
-                        <h5 class="modal-title">
+                        <h5 class="modal-title" style="color: #DC143C; font-weight: 800;">
                             Ответ неверный
                         </h5>
                     </div>
                     <div class="modal-body d-flex align-items-center justify-content-center">
-                        <p v-if="help_type == 'Текст'" class="text-black" style="font-size: 24px;">
+                        <p v-if="help_type == 'Текст'" class="text-black" style="font-size: 24px; text-align: center;">
                           {{ help }}
                         </p>
                         <img style="width: 100%; object-fit:contain;" v-if="help_type == 'Изображение'" :src="link + help_file">
